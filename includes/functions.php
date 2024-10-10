@@ -21,8 +21,25 @@ function connectToDB() {
 
 // set error message
 function setError( $error_message, $redirect_page ) {
-    $_SESSION["error"] = $error_message;
-    // redirect back to login page
-    header("Location: " . $redirect_page );
-    exit;
+  $_SESSION["error"] = $error_message;
+  // redirect back to login page
+  header("Location: " . $redirect_page );
+  exit;
+}
+
+
+// check if user is logged in or not
+function checkIfuserIsNotLoggedIn() {
+if ( !isset( $_SESSION['user'] ) ) {
+  header("Location: /login");
+  exit;
+}
+}
+
+// check if current user is an admin or not
+function checkIfIsNotAdmin() {
+  if ( isset( $_SESSION['user'] ) && $_SESSION['user']['role'] != 'admin' ) {
+      header("Location: /dashboard");
+      exit;
+  }
 }

@@ -1,14 +1,15 @@
-<?php require "parts/header.php"; ?>
+<?php 
+  
+  
+ // check if the user is admin or not
+ checkIfIsNotAdmin();
+
+require "parts/header.php"; ?>
 <div class="container mx-auto my-5" style="max-width: 700px;">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <h1 class="h1">Add New User</h1>
       </div>
       <div class="card mb-2 p-4">
-        <!--
-        1. form method and action
-        2. field's name
-        3. display error message
-        -->
         <?php require "parts/error_message.php"?>
         <form action="/user/add" method="post">
           <div class="mb-3">
@@ -58,7 +59,7 @@
       </div>
       <div class="text-center">
         <a href="/manage-users" class="btn btn-link btn-sm"
-          ><i class="bi bi-arrow-left"></i> Back to Users</a
+          ><i class="bi bi-arrow-left"></i> Back to Manage Users</a
         >
       </div>
     </div>

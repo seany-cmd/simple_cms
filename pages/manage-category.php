@@ -31,10 +31,10 @@
 require "parts/header.php"; ?>
 <div class="container mx-auto my-5" style="max-width: 700px;">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <h1 class="h1">Manage Posts</h1>
+        <h1 class="h1">Manage Book Category</h1>
         <div class="text-end">
-          <a href="/manage-posts-add" class="btn btn-primary btn-sm"
-            >Add New Post</a
+          <a href="/manage-category-add" class="btn btn-primary btn-sm"
+            >Add Book</a
           >
         </div>
       </div>
@@ -43,11 +43,9 @@ require "parts/header.php"; ?>
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col" style="width: 20%;">Post</th>
-              <th scope="col">Status</th>
-              <th scope="col">Author</th>
-              <th scope="col">Posted On</th>
-              <th scope="col" class="text-end">Actions</th>
+              <th scope="col">Name</th>
+              <th scope="col">Book</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -67,11 +65,7 @@ require "parts/header.php"; ?>
                 <?= $post['name']?>
               </td>
               <td>
-                <!-- Posted On date -->
-                <?= $post['created_on']?>
-              </td>
-              <td class="text-end">
-                <div class="buttons">
+                
                   <a
                     href="/post?id=<?= $post['id']; ?>"
                     target="_blank"
@@ -79,7 +73,7 @@ require "parts/header.php"; ?>
                     ><i class="bi bi-eye"></i
                   ></a>
                   <a
-                    href="/manage-posts-edit?id=<?= $post['id']; ?>"
+                    href="/manage-category-edit?id=<?= $post['id']; ?>"
                     class="btn btn-secondary btn-sm me-2"
                     ><i class="bi bi-pencil"></i
                   ></a>
@@ -113,6 +107,10 @@ require "parts/header.php"; ?>
               </td>
             </tr>
             <?php endforeach; ?>
+            
+          </tbody>
+        </table>
+      </div>
             
           </tbody>
         </table>

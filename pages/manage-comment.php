@@ -1,41 +1,28 @@
 <?php 
+// check if user is logged in or not
+checkIfuserIsNotLoggedIn();
 
-  // check if whoever that viewing this page is logged in.
-  // if not logged in, you want to redirect back to login page
-  checkIfuserIsNotLoggedIn();
-
+ 
   // 1. connect to the database
   $database = connectToDB();
-
-  // load data from the database
-  // if logged in user is not a admin or editor, show only their own posts
-  if ( $_SESSION['user']['role'] == 'user' ) {
-    $sql = "SELECT posts.id, posts.title, posts.content, posts.status, posts.user_id, users.name, posts.created_on FROM posts JOIN users ON posts.user_id = users.id WHERE posts.user_id = :user_id";
-    $query = $database->prepare( $sql );
-    $query->execute([
-      "user_id" => $_SESSION['user']['id']
-    ]);
-    $posts = $query->fetchAll();
-  } else {
-    $sql =  "SELECT 
-                    posts.id, posts.title, posts.content, posts.user_id, users.name, posts.status ,posts.created_on
-                    FROM posts 
-                    JOIN users 
-                    ON posts.user_id = users.id";
-    $query = $database->prepare( $sql );
-    $query->execute();
-    $posts = $query->fetchAll();
-    
-  }
-
-require "parts/header.php"; ?>
+  
+  // 2. get all the users
+  // 2.1
+  $sql = "SELECT * FROM users";
+  // 2.2
+  $query = $database->prepare( $sql );
+  // 2.3
+  $query->execute();
+  // 2.4
+  $users = $query->fetchAll();
+  
+  require "parts/header.php"; 
+?>
 <div class="container mx-auto my-5" style="max-width: 700px;">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <h1 class="h1">Manage Posts</h1>
+        <h1 class="h1">Manage Comment</h1>
         <div class="text-end">
-          <a href="/manage-posts-add" class="btn btn-primary btn-sm"
-            >Add New Post</a
-          >
+          <a href="/manage-comment-add" class="btn btn-primary btn-sm">Add Comment</a>
         </div>
       </div>
       <div class="card mb-2 p-4">
@@ -43,50 +30,33 @@ require "parts/header.php"; ?>
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col" style="width: 20%;">Post</th>
-              <th scope="col">Status</th>
-              <th scope="col">Author</th>
-              <th scope="col">Posted On</th>
-              <th scope="col" class="text-end">Actions</th>
+              <th scope="col">Name</th>
+              <th scope="col">Comment</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody>
-          <?php foreach ($posts as $index => $post) :?>
-            <tr>
-              <th scope="row"><?= $post['id']?></th>
-              <td><?= $post['title']?></td>
-              <td>
-                <?php if($post['status'] == "publish") :?>
-                  <span class="badge bg-success"><?=$post['status']?></span>
-                <?php else :?>
-                  <span class="badge bg-warning"><?=$post['status']?></span>
-                <?php endif ;?>
-              </td>
-              <td>
-                <!-- author -->
-                <?= $post['name']?>
-              </td>
-              <td>
-                <!-- Posted On date -->
-                <?= $post['created_on']?>
-              </td>
+        </table>
+        <tbody>
+       
+           
+            
+               
               <td class="text-end">
                 <div class="buttons">
                   <a
                     href="/post?id=<?= $post['id']; ?>"
-                    target="_blank"
                     class="btn btn-primary btn-sm me-2"
                     ><i class="bi bi-eye"></i
                   ></a>
                   <a
-                    href="/manage-posts-edit?id=<?= $post['id']; ?>"
+                    href="/manage-comment<?= $post['id']; ?>"
                     class="btn btn-secondary btn-sm me-2"
                     ><i class="bi bi-pencil"></i
                   ></a>
                  <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete-post-<?= $post['id']; ?>">
                     <i class="bi bi-trash"></i>
                   </button>
-
+                   </tbody>
                   <!-- Modal -->
                   <div class="modal fade" id="delete-post-<?= $post['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -112,14 +82,11 @@ require "parts/header.php"; ?>
                 </div>
               </td>
             </tr>
-            <?php endforeach; ?>
-            
-          </tbody>
-        </table>
+           
       </div>
       <div class="text-center">
         <a href="/dashboard" class="btn btn-link btn-sm"
-          ><i class="bi bi-arrow-left"></i> Back to Dashboard</a
+          ><i class="bi bi-arrow-left"></i>Back to Dashboard</a
         >
       </div>
     </div>
